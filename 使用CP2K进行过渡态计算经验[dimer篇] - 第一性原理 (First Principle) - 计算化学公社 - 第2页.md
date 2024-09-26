@@ -20,7 +20,7 @@ PS： 可能有人会问为什么不介绍主流的CI-NEB方法。首先，我�
 
 pymatgen和pymatgen-diffusion  
 
-1.  pip install pymatgen pymatgen-diffusion
+pip install pymatgen pymatgen-diffusion
 
 _复制代码_
 
