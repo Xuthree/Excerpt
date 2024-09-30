@@ -36,8 +36,10 @@ AIMD计算通常非常耗时，所以，为了减少计算成本，我们可以�
 现在我们通过一个 Li\_Sn\_S 材料的例子来详细了解一下整个计算和处理的过程。该材料的结构显示如下：
 
 本例中采用单胞做计算，INCAR 设置如下：  
+
 ![](https://segmentfault.com/img/bVcQOfX)
 
+```
 \[test@ln0%tianhe2 li\_sn\_s\]$ vi INCAR  
 ISTART = 0  
 ICHARG = 2  
@@ -54,11 +56,12 @@ LWAVE = F
 LCHARG = F  
 IALGO = 48  
 LREAL = A
+```
 
 AIMD 计算结束之后会得到 XDATCAR 文件。很多时候，由于超算的时间限制，一个完整的AIMD计算需要提交两三次，从而产生两三个 XDATCAR 文件，这时，我们只要把它们按顺序通过 cat 命令合并在一起就行。例如我们有三个 XDATCAR 文件，分别命名成 XDATCAR01，XDATCAR02，和 XDATCAR03。
 
 ![](https://segmentfault.com/img/bVcQOgs)
-  
+
 \[test@ln0%tianhe2 li\_sn\_s\]$ cat XDATCAR01 XDATCAR02 XDATCAR03 > XDATCAR
 
 **新得到的XDATCAR文件，注意删掉重复的与晶格信息相关的行**，一般续算的次数也不多，在使用上面命令的时候，手动把`XDATCAR02`, `XDATCAR03` 中的删除即可。
@@ -73,21 +76,25 @@ Pymatgen 大显身手
 
 安装完成后，我们可以试着运行 python，导入 Pyamtgen 模块，如果像下面一样没有出错，就是安装成功了。
 
-\[test@ln0%tianhe2 li\_sn\_s\]$ python  
-Python 3.7.3 (default, Mar 27 2019, 22:11:17)  
-\[GCC 7.3.0\] :: Anaconda, Inc. on linux  
-Type "help", "copyright", "credits" or "license" for more information.
-
+```
+> > > \[test@ln0%tianhe2 li\_sn\_s\]$ python  
+> > > Python 3.7.3 (default, Mar 27 2019, 22:11:17)  
+> > > \[GCC 7.3.0\] :: Anaconda, Inc. on linux  
+> > > Type "help", "copyright", "credits" or "license" for more information.
+> > > 
 > > > import pymatgen
+```
 
 查看 DiffusionAnalyzer 的类
 
 大家可以通过官方文档（\[[https://pymatgen.org/pymatgen...](https://link.segmentfault.com/?enc=zpT7lao1Lrs5p2XIwprvAg%3D%3D.c%2B38gJ4qF47P6sQ8CL%2Bevqz0chy2lyhiYs5hTTIk7CkQpjKho6t3iCuhkITPLUt2%2BTMCB0ZkFlsh9ofyV44QXw%3D%3D)）查看接下来要使用的类，熟悉一下代码的用法。
 
+```python
 class DiffusionAnalyzer(MSONable):  
 def \_\_init\_\_(self, structure, displacements, specie, temperature,  
 time\_step, step\_skip, smoothed="max", min\_obs=30,  
 avg\_nsteps=1000, lattices=None):
+```
 
 这段代码显示，运行这个类需要一系列的输入信息，包括材料结构（structure），位移（displacements），要研究的离子（specie），温度（temperature）等等。
 
@@ -100,6 +107,7 @@ avg\_nsteps=1000, lattices=None):
 代码示例
 
 新建一个文件，名字为`li_conductivity.py`  
+
 ![](https://segmentfault.com/img/bVcQOgO)
 
 在终端运行该文件
@@ -109,6 +117,7 @@ avg\_nsteps=1000, lattices=None):
 \[test@ln0%tianhe2 li\_sn\_s\]$ python li\_conductivity.py
 
 一段时间后就会得到MSD图像和离子电导率  
+
 ![](https://segmentfault.com/img/bVcQOg1)
 
 可见，该材料在 900K 时的锂离子电导率为 884.05 mS/cm。
