@@ -18,9 +18,11 @@ PS： 可能有人会问为什么不介绍主流的CI-NEB方法。首先，我�
 准备：  
 1\. 安装
 
+```sh
 pymatgen和pymatgen-diffusion  
 
 pip install pymatgen pymatgen-diffusion
+```
 
 _复制代码_
 
@@ -32,7 +34,7 @@ _复制代码_
 
 _复制代码_
 
-  
+
 这会返回一个值，一般插点的数目可以是这个值除以0.8。  
 假设要插4个点。这里用许楠博士写的idpp.py非线性插点脚本，可得到比较理想的插点结构：  
 
@@ -52,17 +54,15 @@ _复制代码_
 
 1.  cp 2.xyz coord.inc  
     
-2.  sed -i '1,2d' coord.inc
-
-_复制代码_
+2.  sed -i '1,2d' coord.inc_
 
 这里开始要用到赵亚帆博士写的一些python代码，年份较老，是基于python2的，我自己转成了python3并修改了一点点，加上自己写的一些shell脚本打包成了dimer.tar.gz。解压后，假设所在目录为$HOME/cbin/dimer，则需要设置环境变量和pythyon的环境变量：  
 
-1.  export PATH=$PATH:$HOME/cbin/dimer  
-    
-2.  export PYTHONPATH=$PYTHONPATH:$HOME/cbin/dimer
+```bash
+export PATH=$PATH:$HOME/cbin/dimer  
 
-_复制代码_
+export PYTHONPATH=$PYTHONPATH:$HOME/cbin/dimer
+```
 
 用反应物和产物生成DIMER\_VECTOR文件：  
 至此，DIMER计算的所有文件都准备好了，可以用dcc脚本生成一个DIMER振动方向的xyz文件：  
@@ -88,7 +88,7 @@ dcc中最后一行的sz命令是因为我自己用的是windows系统的Xshell�
 
 _复制代码_
 
-  
+
 会输出类似的内容：  
  ![](http://bbs.keinsci.com/forum.php?mod=attachment&aid=MzU0Mzl8ZTk4NmY2NzR8MTcyNzMyMTc1NXwxMzQ3OXwyMzUxNg%3D%3D&noupdate=yes)   
 这里显示的是第214步的收敛信息，和Gaussian很像，4个收敛标准都是yes即收敛。  
